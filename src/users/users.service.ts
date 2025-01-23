@@ -1,27 +1,23 @@
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/sqlite';
 import { Injectable } from '@nestjs/common';
-import { Role } from 'src/roles/roles.enum';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
+import { User } from 'src/entities/users.entities';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'maximinetto',
-      password: '1234',
-      roles: [Role.ADMIN],
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: '1234',
-      roles: [Role.USER],
-    },
-  ];
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: EntityRepository<User>,
+  ) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findOne(username: string): Promise<User | null> {
+    return await this.userRepository.findOne(
+      {
+        username,
+      },
+      {
+        populate: ['roles'],
+      },
+    );
   }
 }
