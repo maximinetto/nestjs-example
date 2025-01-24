@@ -10,7 +10,8 @@ export class Role {
   @Unique()
   name!: string;
 
-  constructor(name: RoleEnum) {
-    this.name = name;
+  constructor({ id, name }: { id?: number; name?: RoleEnum }) {
+    if (id) this.id = id;
+    if (name) this.name = name;
   }
 }

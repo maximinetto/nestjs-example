@@ -1,4 +1,12 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  HttpStatus,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import DTO from './DTO';
 import { Roles } from './roles/roles.decorator';
@@ -11,9 +19,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @HttpCode(HttpStatus.OK)
+  @Header('Content-Type', 'application/json')
   @Roles(Role.ADMIN)
-  getHello(@Query() dto: DTO): string {
+  getHello(@Query() dto: DTO): { message: string } {
     console.log(dto);
-    return this.appService.getHello();
+    return { message: this.appService.getHello() };
   }
 }

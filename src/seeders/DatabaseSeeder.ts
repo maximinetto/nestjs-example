@@ -10,13 +10,13 @@ export class DatabaseSeeder extends Seeder {
     em.create(User, {
       username: 'maximinetto',
       password: await hash('123456'),
-      roles: [new Role(RoleEnum.ADMIN)],
+      roles: [new Role({ name: RoleEnum.ADMIN })],
     });
 
     em.create(User, {
       username: 'maria',
       password: await hash('123456'),
-      roles: [new Role(RoleEnum.USER)],
+      roles: [new Role({ name: RoleEnum.USER })],
     });
 
     em.create(Role, {
