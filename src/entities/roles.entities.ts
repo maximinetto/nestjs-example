@@ -8,7 +8,7 @@ export class Role {
 
   @Property()
   @Unique()
-  name!: string;
+  name!: RoleEnum;
 
   constructor({ id, name }: { id?: number; name?: RoleEnum }) {
     if (id) this.id = id;

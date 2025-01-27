@@ -17,7 +17,7 @@ export class AuthService {
     const user = await this.usersService.findOne(username);
 
     if (!user || !(await verify(pass, user.password))) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const payload = {

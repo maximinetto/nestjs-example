@@ -6,6 +6,7 @@ import {
   Property,
   Unique,
 } from '@mikro-orm/core';
+import { Exclude } from 'class-transformer';
 import { MaxLength } from 'class-validator';
 import { Role } from './roles.entities';
 
@@ -24,6 +25,7 @@ export class User {
     length: 50,
   })
   @MaxLength(50)
+  @Exclude()
   password!: string;
 
   @ManyToMany(() => Role)

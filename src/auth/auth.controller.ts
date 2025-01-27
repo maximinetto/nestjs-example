@@ -7,6 +7,8 @@ import {
   Post,
   Request,
 } from '@nestjs/common';
+import { ResponseMessage } from 'src/response-message.decorator';
+import { UserRequest } from 'src/types/UserRequest';
 import { Public } from './auth.decorator';
 import { AuthService } from './auth.service';
 
@@ -16,13 +18,25 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
+  @ResponseMessage('Login successful')
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  async signIn(@Body() signInDto: { username: string; password: string }) {
+    const token = await this.authService.signIn(
+      signInDto.username,
+      signInDto.password,
+    );
+
+    return {
+      token,
+    };
   }
 
   @Get('profile')
-  getProfile(@Request() req) {
+  getProfile(@Request() req: UserRequest) {
     return req.user;
   }
+
+  @Post('logout')
+  @ResponseMessage('Session cleaned')
+  logout() {}
 }
